@@ -1,0 +1,43 @@
+{
+  "name": "frontend-project-lvl2-evvs",
+  "version": "0.0.1",
+  "description": "It's the second project for courses. Cli utilit which cans calculate differences in files",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "gendiff": "dist/index.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "NODE_ENV=production babel src --out-dir dist",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evvs/frontend-project-lvl2.git"
+  },
+  "keywords": [
+    "cli",
+    "differences"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evvs/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/evvs/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^4.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/node": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0",
+    "jest": "^25.1.0"
+  }
+}
