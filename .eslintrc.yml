@@ -1,0 +1,11 @@
+plugins:
+ - babel
+env:
+  node: true
+parser: babel-eslint
+extends: 
+ - 'airbnb-base'
+ - 'eslint:recommended'
+rules:
+ no-console: 0
+
