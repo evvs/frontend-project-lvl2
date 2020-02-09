@@ -1,7 +1,7 @@
 import { jsonToObject } from '../src/parse';
 
-const beforeWay = '/mnt/d/projects/frontend-project-lvl2/__tests__/data/before.json';
-const afterWay = '/mnt/d/projects/frontend-project-lvl2/__tests__/data/after.json';
+const beforeWay = '/mnt/d/projects/frontend-project-lvl2/__tests__/__fixtures__/before.json';
+const afterWay = '/mnt/d/projects/frontend-project-lvl2/__tests__/__fixtures__/after.json';
 
 let beforeObject
 let afterObject
