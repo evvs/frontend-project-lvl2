@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import generateDifference from './genDiff';
+import render from './render'
 
 const program = require('commander');
 
@@ -10,5 +12,9 @@ program
   .action((firstPath, secondPath) => {
     const before = firstPath;
     const after = secondPath;
+
+    const difference = generateDifference(before, after)
+
+    render(difference)
   });
 program.parse(process.argv);

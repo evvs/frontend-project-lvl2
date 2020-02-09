@@ -16,6 +16,12 @@ beforeEach(() => {
             newValue: true,
 
         },
+        {
+            action: 'same',
+            key: 'host',
+            oldValue: 'hexlet.io',
+            newValue: 'hexlet.io'
+        },
         { action: 'change', key: 'timeout', oldValue: 50, newValue: 20 },
         {
             action: 'delete',
