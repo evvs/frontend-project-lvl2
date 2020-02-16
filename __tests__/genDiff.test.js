@@ -1,4 +1,5 @@
 import generateDifference from '../src/genDiff';
+import { parseDifference } from '../src/genDiff';
 import { jsonToObject } from '../src/parse';
 
 
@@ -38,4 +39,16 @@ test('test generateDifference', () => {
     jsonDifference[0] = {};
     jsonDifference[2] = { ...jsonDifference[2], oldValue: 'testing', newValue: 'testing' };
     expect(generateDifference(beforeWay, afterWay)).not.toEqual(jsonDifference)
+})
+
+test('test parseDifference', () => {
+    expect(parseDifference('add')('testkey', 1, 2)).toEqual(
+        {
+            action: 'add',
+            key: 'testkey',
+            oldValue: 1,
+            newValue: 2
+        }
+    )
+    expect(parseDifference('add')('testkey', 1, 2)).not.toEqual({})
 })

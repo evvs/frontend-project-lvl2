@@ -29,7 +29,8 @@
   },
   "homepage": "https://github.com/evvs/frontend-project-lvl2#readme",
   "dependencies": {
-    "commander": "^4.1.0"
+    "commander": "^4.1.0",
+    "js-yaml": "^3.13.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",

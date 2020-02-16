@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { jsonToObject } from './parse'
 import actionType from './actions'
 
-const parseDifference = (action) => {
+export const parseDifference = (action) => {
 
     const template = {
         action: action,
