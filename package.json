@@ -7,7 +7,7 @@
     "dist"
   ],
   "bin": {
-    "gendiff": "dist/index.js"
+    "gendiff": "dist/bin/gendiff.js"
   },
   "scripts": {
     "test": "jest",
