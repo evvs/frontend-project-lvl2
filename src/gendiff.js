@@ -12,6 +12,8 @@ export default () => {
     .option('-f, --format [type]', 'output format')
     .action((firstPath, secondPath) => {
       const differences = genDiff(firstPath, secondPath);
+
+      console.log(differences);
       return differences;
     })
     .parse(process.argv);

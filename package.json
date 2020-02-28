@@ -1,6 +1,6 @@
 {
   "name": "frontend-project-lvl2-evvs",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "It's the second project of courses. Cli utilit which cans calculate differences in files",
   "main": "dist/index.js",
   "files": [
@@ -30,7 +30,8 @@
   "homepage": "https://github.com/evvs/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^4.1.0",
-    "js-yaml": "^3.13.1"
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",

@@ -16,6 +16,5 @@ export default (differences) => {
   }, [])
     .join('\n');
 
-  console.log(`\n{\n${strDifferences}\n}`);
   return strDifferences;
 };
