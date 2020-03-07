@@ -5,8 +5,11 @@ const setPath = (filename) => path.join(__dirname, '..', '__fixtures__', filenam
 
 const beforeWay = setPath('before.json');
 const afterWay = setPath('after.json');
-const beforeWayYaml = setPath('before.yml')
+const beforeWayYaml = setPath('before.yml');
 const afterWayYaml = setPath('after.yml');
+const beforeWayIni = setPath('before.ini')
+const afterWayIni = setPath('after.ini');
+
 
 let jsonDifference
 
@@ -47,4 +50,10 @@ test('test generateDifference YAML', () => {
   jsonDifference[0] = {};
   jsonDifference[2] = { ...jsonDifference[2], oldValue: 'testing', newValue: 'testing' };
   expect(generateDifference(beforeWayYaml, afterWayYaml)).not.toEqual(jsonDifference)
+})
+test('test generateDifference INI', () => {
+  expect(generateDifference(beforeWayIni, afterWayIni)).toEqual(jsonDifference)
+  jsonDifference[0] = {};
+  jsonDifference[2] = { ...jsonDifference[2], oldValue: 'testing', newValue: 'testing' };
+  expect(generateDifference(beforeWayIni, afterWayIni)).not.toEqual(jsonDifference)
 })

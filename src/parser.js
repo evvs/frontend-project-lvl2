@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const ini = require('ini');
 
 const fileFormats = [{
   extname: '.json',
@@ -12,7 +13,7 @@ const fileFormats = [{
 },
 {
   extname: '.ini',
-  parser: '',
+  parser: ini.parse,
 },
 ];
 
@@ -21,7 +22,7 @@ const getFileParser = (file) => {
   return parser;
 };
 
-const parseFileToObj = (file) => getFileParser(file)(fs.readFileSync(file));
+const parseFileToObj = (file) => getFileParser(file)(fs.readFileSync(file, 'utf-8'));
 
 const createNode = (actionName, key, oldValue = null, newValue = null) => {
   const node = {
