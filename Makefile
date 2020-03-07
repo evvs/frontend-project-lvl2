@@ -6,7 +6,7 @@ testpublish:
 lint:
 	npx eslint .
 test: 
-	npx jest
+	npx jest --watch
 testStart:
 	npx babel src --out-dir dist
 	npm publish --dry-run

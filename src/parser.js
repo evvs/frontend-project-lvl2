@@ -1,13 +1,14 @@
 const fs = require('fs');
 const path = require('path');
+const yaml = require('js-yaml');
 
 const fileFormats = [{
   extname: '.json',
   parser: JSON.parse,
 },
 {
-  extname: '.yaml',
-  parser: '',
+  extname: '.yml',
+  parser: yaml.safeLoad,
 },
 {
   extname: '.ini',
