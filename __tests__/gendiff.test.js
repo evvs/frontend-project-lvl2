@@ -1,15 +1,7 @@
 import generateDifference from '../src/index';
 import path from 'path';
 
-const setPath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
-
-const beforeWay = setPath('before.json');
-const afterWay = setPath('after.json');
-const beforeWayYaml = setPath('before.yml');
-const afterWayYaml = setPath('after.yml');
-const beforeWayIni = setPath('before.ini')
-const afterWayIni = setPath('after.ini');
-
+const getPath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
 let jsonDifference
 
@@ -39,21 +31,13 @@ beforeEach(() => {
   ]
 });
 
-test('test generateDifference JSON', () => {
-  expect(generateDifference(beforeWay, afterWay)).toEqual(jsonDifference)
+test.each([
+  ['before.json', 'after.json', jsonDifference],
+  ['before.yml', 'after.yml', jsonDifference],
+  ['before.ini', 'after.ini', jsonDifference],
+])('tests files', (before, after, expected) => {
+  expect(generateDifference(getPath(before), getPath(after))).toEqual(jsonDifference)
   jsonDifference[0] = {};
   jsonDifference[2] = { ...jsonDifference[2], oldValue: 'testing', newValue: 'testing' };
-  expect(generateDifference(beforeWay, afterWay)).not.toEqual(jsonDifference)
-})
-test('test generateDifference YAML', () => {
-  expect(generateDifference(beforeWayYaml, afterWayYaml)).toEqual(jsonDifference)
-  jsonDifference[0] = {};
-  jsonDifference[2] = { ...jsonDifference[2], oldValue: 'testing', newValue: 'testing' };
-  expect(generateDifference(beforeWayYaml, afterWayYaml)).not.toEqual(jsonDifference)
-})
-test('test generateDifference INI', () => {
-  expect(generateDifference(beforeWayIni, afterWayIni)).toEqual(jsonDifference)
-  jsonDifference[0] = {};
-  jsonDifference[2] = { ...jsonDifference[2], oldValue: 'testing', newValue: 'testing' };
-  expect(generateDifference(beforeWayIni, afterWayIni)).not.toEqual(jsonDifference)
+  expect(generateDifference(getPath(before), getPath(after))).not.toEqual(jsonDifference)
 })
