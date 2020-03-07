@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { parseFileToObj, createNode } from './parser';
-import render from './render';
 
 const path = require('path');
 
@@ -44,5 +43,5 @@ export default (file1, file2) => {
     return [...added, ...changedAndDeleted];
   };
 
-  return render(compare(beforeObj, afterObj));
+  return compare(beforeObj, afterObj);
 };
