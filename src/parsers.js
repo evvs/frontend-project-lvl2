@@ -24,15 +24,5 @@ const getFileParser = (file) => {
 
 const parseFileToObj = (file) => getFileParser(file)(fs.readFileSync(file, 'utf-8'));
 
-const createNode = (actionName, key, oldValue = null, newValue = null) => {
-  const node = {
-    actionName,
-    key,
-    oldValue,
-    newValue,
-  };
 
-  return node;
-};
-
-export { parseFileToObj, createNode };
+export default parseFileToObj;

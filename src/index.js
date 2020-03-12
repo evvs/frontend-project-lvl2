@@ -1,24 +1,7 @@
 import _ from 'lodash';
-import { parseFileToObj, createNode } from './parser';
+import parseFileToObj from './parsers';
 
 const path = require('path');
-
-const actions = [
-  {
-    name: 'added or deleted',
-    check: (afterObj, currentValue) => !_.has(afterObj, currentValue),
-  },
-  {
-    name: 'changed',
-    check: (afterObj, currentValue, beforeObj) => _.has(afterObj, currentValue)
-      && beforeObj[currentValue] !== afterObj[currentValue],
-  },
-  {
-    name: 'unchanged',
-    check: (afterObj, currentValue, beforeObj) => _.has(afterObj, currentValue)
-      && beforeObj[currentValue] === afterObj[currentValue],
-  },
-];
 
 
 const getPathToFile = (file) => path.resolve(process.cwd(), `${file}`);
@@ -29,18 +12,47 @@ export default (file1, file2) => {
   const afterObj = parseFileToObj(getPathToFile(file2));
 
   const compare = (before, after) => {
-    const changedAndDeleted = Object.keys(before)
-      .reduce((accumulator, key) => {
-        const { name } = actions.find(({ check }) => check(after, key, before));
-        const difference = name === 'added or deleted' ? createNode('deleted', key, before[key]) : createNode(name, key, before[key], after[key]);
-        return [...accumulator, difference];
-      }, []);
+    const keysUnion = _.union([...Object.keys(before), ...Object.keys(after)]);
+    return keysUnion.map((key) => {
+      if (_.isObject(before[key]) && _.isObject(after[key])) {
+        return {
+          action: 'unchanged',
+          name: key,
+          children: compare(before[key], after[key]),
+        };
+      }
 
-    const added = Object.keys(after)
-      .filter((key) => !_.has(before, key))
-      .reduce((accumulator, key) => [...accumulator, createNode('added', key, before[key], after[key])], []);
-
-    return [...added, ...changedAndDeleted];
+      if (!_.has(after, key)) {
+        return {
+          action: 'deleted',
+          name: key,
+          value: before[key],
+        };
+      }
+      if (!_.has(before, key)) {
+        return {
+          action: 'added',
+          name: key,
+          value: after[key],
+        };
+      }
+      if (_.has(before, key) && _.has(after, key) && before[key] === after[key]) {
+        return {
+          action: 'unchanged',
+          name: key,
+          value: before[key],
+        };
+      }
+      if (_.has(before, key) && _.has(after, key) && before[key] !== after[key]) {
+        return {
+          action: 'changed',
+          name: key,
+          oldValue: before[key],
+          newValue: after[key],
+        };
+      }
+      return null;
+    });
   };
 
   return compare(beforeObj, afterObj);
