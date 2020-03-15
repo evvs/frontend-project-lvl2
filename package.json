@@ -1,6 +1,6 @@
 {
   "name": "frontend-project-lvl2-evvs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "It's the second project of courses. Cli utilit which cans calculate differences in files",
   "main": "dist/index.js",
   "files": [
