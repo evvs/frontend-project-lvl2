@@ -1,6 +1,7 @@
 import generateDifference from '../src/index';
 import path from 'path';
 import { withoutDeep, deep } from '../__fixtures__/expected';
+import render from '../src/formatters/plain'
 
 const getPath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
@@ -37,3 +38,5 @@ test.each([
   differenceDeep[2] = { ...withoutDeep[2], oldValue: 'testing', newValue: 'testing' };
   expect(generateDifference(getPath(before), getPath(after))).not.toEqual(differenceDeep)
 })
+
+console.log(render(generateDifference(getPath('beforeDeep.json'), getPath('afterDeep.json'))))
