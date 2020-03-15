@@ -1,5 +1,5 @@
 import genDiff from '.';
-import render from './formatters/index';
+import render from './formatters';
 
 
 const commander = require('commander');
