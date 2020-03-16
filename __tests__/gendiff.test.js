@@ -1,7 +1,6 @@
 import generateDifference from '../src/index';
 import path from 'path';
 import { withoutDeep, deep } from '../__fixtures__/expected';
-import render from '../src/formatters/plain'
 
 const getPath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
