@@ -5,20 +5,20 @@ import render from '../src/formatters/plain'
 
 const getPath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
-let differences 
+let differences
 let differenceDeep
 
 beforeEach(() => {
-   differences = [...withoutDeep]
-   differenceDeep = [...deep]
+  differences = [...withoutDeep]
+  differenceDeep = [...deep]
 });
 
 test.each([
-  ['before.json', 'after.json', ],
-  ['before.yml', 'after.yml', ],
-  ['before.ini', 'after.ini', ],
-  ['before.yml', 'after.json', ],
-  ['before.ini', 'after.yml', ],
+  ['before.json', 'after.json',],
+  ['before.yml', 'after.yml',],
+  ['before.ini', 'after.ini',],
+  ['before.yml', 'after.json',],
+  ['before.ini', 'after.yml',],
 ])('test without deep', (before, after) => {
   expect(generateDifference(getPath(before), getPath(after))).toEqual(differences)
   differences[0] = {};
@@ -27,16 +27,14 @@ test.each([
 })
 
 test.each([
-  ['beforeDeep.json', 'afterDeep.json', ],
-  ['beforeDeep.yml', 'afterDeep.yml', ],
-  ['beforeDeep.ini', 'afterDeep.ini', ],
-  ['beforeDeep.yml', 'afterDeep.json', ],
-  ['beforeDeep.ini', 'afterDeep.yml', ],
+  ['beforeDeep.json', 'afterDeep.json',],
+  ['beforeDeep.yml', 'afterDeep.yml',],
+  ['beforeDeep.ini', 'afterDeep.ini',],
+  ['beforeDeep.yml', 'afterDeep.json',],
+  ['beforeDeep.ini', 'afterDeep.yml',],
 ])('test deep', (before, after) => {
   expect(generateDifference(getPath(before), getPath(after))).toEqual(differenceDeep)
   differenceDeep[0] = {};
   differenceDeep[2] = { ...withoutDeep[2], oldValue: 'testing', newValue: 'testing' };
   expect(generateDifference(getPath(before), getPath(after))).not.toEqual(differenceDeep)
 })
-
-console.log(render(generateDifference(getPath('beforeDeep.json'), getPath('afterDeep.json'))))
