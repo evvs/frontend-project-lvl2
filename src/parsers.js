@@ -26,9 +26,9 @@ const findFileParser = (file) => {
 
 const parseFile = (file) => {
   const fileData = readFile(file);
-  const dataParser = findFileParser(file);
+  const parseData = findFileParser(file);
 
-  return dataParser(fileData);
+  return parseData(fileData);
 };
 
 export { parseFile, readFile };
