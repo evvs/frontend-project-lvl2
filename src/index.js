@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import parseFileToObj from './parsers';
+import { parseFile } from './parsers';
 
 const path = require('path');
 
@@ -8,8 +8,8 @@ const getPathToFile = (file) => path.resolve(process.cwd(), `${file}`);
 
 
 export default (file1, file2) => {
-  const beforeObj = parseFileToObj(getPathToFile(file1));
-  const afterObj = parseFileToObj(getPathToFile(file2));
+  const parsedFile1 = parseFile(getPathToFile(file1));
+  const parsedFile2 = parseFile(getPathToFile(file2));
 
   const compare = (before, after) => {
     const keysUnion = _.union([...Object.keys(before), ...Object.keys(after)]);
@@ -55,5 +55,5 @@ export default (file1, file2) => {
     });
   };
 
-  return compare(beforeObj, afterObj);
+  return compare(parsedFile1, parsedFile2);
 };

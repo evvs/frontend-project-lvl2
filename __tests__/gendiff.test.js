@@ -1,39 +1,39 @@
-import generateDifference from '../src/index';
+import generateDifference from '../src';
 import path from 'path';
-import { withoutDeep, deep } from '../__fixtures__/expected';
+import render from '../src/formatters'
+import { readFile } from '../src/parsers'
 
 const getPath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
-let differences
-let differenceDeep
-
-beforeEach(() => {
-  differences = [...withoutDeep]
-  differenceDeep = [...deep]
-});
-
 test.each([
-  ['before.json', 'after.json',],
-  ['before.yml', 'after.yml',],
-  ['before.ini', 'after.ini',],
-  ['before.yml', 'after.json',],
-  ['before.ini', 'after.yml',],
-])('test without deep', (before, after) => {
-  expect(generateDifference(getPath(before), getPath(after))).toEqual(differences)
-  differences[0] = {};
-  differences[2] = { ...withoutDeep[2], oldValue: 'testing', newValue: 'testing' };
-  expect(generateDifference(getPath(before), getPath(after))).not.toEqual(differences)
+  ['beforeDeep.json', 'afterDeep.json','plainRes.txt',],
+  ['beforeDeep.yml', 'afterDeep.yml','plainRes.txt',],
+  ['beforeDeep.ini', 'afterDeep.ini','plainRes.txt',],
+])('test plain', (before, after, expected) => {
+  const expectedOutput = readFile(getPath(expected));
+  expect(render(generateDifference(getPath(before), getPath(after)), 'plain')).toEqual(expectedOutput);
 })
-
 test.each([
-  ['beforeDeep.json', 'afterDeep.json',],
-  ['beforeDeep.yml', 'afterDeep.yml',],
-  ['beforeDeep.ini', 'afterDeep.ini',],
-  ['beforeDeep.yml', 'afterDeep.json',],
-  ['beforeDeep.ini', 'afterDeep.yml',],
-])('test deep', (before, after) => {
-  expect(generateDifference(getPath(before), getPath(after))).toEqual(differenceDeep)
-  differenceDeep[0] = {};
-  differenceDeep[2] = { ...withoutDeep[2], oldValue: 'testing', newValue: 'testing' };
-  expect(generateDifference(getPath(before), getPath(after))).not.toEqual(differenceDeep)
+  ['beforeDeep.json', 'afterDeep.json','jsonRes.txt',],
+  ['beforeDeep.yml', 'afterDeep.yml','jsonRes.txt',],
+  ['beforeDeep.ini', 'afterDeep.ini','jsonRes.txt',],
+])('test json', (before, after, expected) => {
+  const expectedOutput = readFile(getPath(expected));
+  expect(render(generateDifference(getPath(before), getPath(after)), 'json')).toEqual(expectedOutput);
+})
+test.each([
+  ['beforeDeep.json', 'afterDeep.json','jsonRes.txt',],
+  ['beforeDeep.yml', 'afterDeep.yml','jsonRes.txt',],
+  ['beforeDeep.ini', 'afterDeep.ini','jsonRes.txt',],
+])('test json', (before, after, expected) => {
+  const expectedOutput = readFile(getPath(expected));
+  expect(render(generateDifference(getPath(before), getPath(after)), 'json')).toEqual(expectedOutput);
+})
+test.each([
+  ['beforeDeep.json', 'afterDeep.json','treeRes.txt',],
+  ['beforeDeep.yml', 'afterDeep.yml','treeRes.txt',],
+  ['beforeDeep.ini', 'afterDeep.ini','treeRes.txt',],
+])('test tree', (before, after, expected) => {
+  const expectedOutput = readFile(getPath(expected));
+  expect(render(generateDifference(getPath(before), getPath(after)), 'tree')).toEqual(expectedOutput);
 })
