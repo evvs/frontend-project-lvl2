@@ -24,7 +24,7 @@ const render = (tree) => {
 
         case 'unchanged':
           return _.has(node, 'children') ? `${acc}  ${indent(depth)}${node.name}: {
-${iter(node.children, depth + 1)}}\n`
+${iter(node.children, depth + 1)}${indent(depth)}  }\n`
             : `${acc}${indent(depth)}  ${node.name}: ${stringify(node.value, depth)}\n`;
 
         case 'deleted':
