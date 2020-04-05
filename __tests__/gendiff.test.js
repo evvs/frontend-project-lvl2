@@ -1,18 +1,25 @@
 import generateDifference from '../src';
+import render from '../src/formatters';
 import path from 'path';
-import render from '../src/formatters'
-import { readFile } from '../src/parsers'
+import fs from 'fs';
 
-const getPath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
-const getExpected = (file) => readFile(getPath(file));
+const getPathToFixture = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+const readFixture = (filename) => fs.readFileSync(getPathToFixture(filename), 'utf-8');
 
-test('tests', () => {
-  expect(render(generateDifference(getPath('beforeDeep.json'), getPath('afterDeep.json')), 'tree'))
-  .toEqual(getExpected('treeRes.txt'));
-  expect(render(generateDifference(getPath('beforeDeep.ini'), getPath('afterDeep.ini')), 'plain'))
-  .toEqual(getExpected('plainRes.txt'));
-  expect(render(generateDifference(getPath('beforeDeep.yml'), getPath('afterDeep.yml')), 'json'))
-  .toEqual(getExpected('jsonRes.txt'));
-  expect(render(generateDifference(getPath('beforeDeep.json'), getPath('afterDeep.yml')), 'plain'))
-  .toEqual(getExpected('plainRes.txt'));
-})
+const testCases = [
+  [['.json', '.json'], 'tree', 'treeRes.txt'],
+  [['.ini', '.ini'], 'json', 'jsonRes.txt'],
+  [['.yml', '.yml'], 'plain', 'plainRes.txt'],
+  [['.json', '.yml'], 'tree', 'treeRes.txt'],
+  [['.yml', '.ini'], 'json', 'jsonRes.txt'],
+];
+
+
+test.each(testCases)('Compare two files', ([extension1, extension2], format, result) => {
+  const pathToFile1 = getPathToFixture(`before${extension1}`);
+  const pathToFile2 = getPathToFixture(`after${extension2}`);
+  const expectedResult = readFixture(result);
+  const comparisonResult = render(generateDifference(pathToFile1, pathToFile2), format);
+
+  expect(comparisonResult).toEqual(expectedResult);
+});
