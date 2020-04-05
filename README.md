@@ -9,11 +9,12 @@ Supported file formats: *json, ini, yml*
 
 ### install:
 > npm install frontend-project-lvl2-evvs
+[![asciicast](https://asciinema.org/a/JoiZ0gKOK5toE2oxiuj3nTmY7.svg)](https://asciinema.org/a/JoiZ0gKOK5toE2oxiuj3nTmY7)
 
 ### usage:
 > gendiff --format [output format] [path to file] [path to file]
 
-If you don't use *--format* output'll be tree format 
+If you don't use *--format* output'll be in tree format 
 ### Output formats:
   gendiff --format **tree** (default value)
   
@@ -22,16 +23,15 @@ If you don't use *--format* output'll be tree format
   gendiff --format **plain**
   
 ### Examples:
->gendiff beforeDeep.json afterDeep.json
 
->gendiff files/beforeDeep.json files/afterDeep.json
+>gendiff files/before.json files/after.json
 
-[![asciicast](https://asciinema.org/a/89iq5sFe1jLk5G3nwr3nJ0zFc.svg)](https://asciinema.org/a/89iq5sFe1jLk5G3nwr3nJ0zFc)
+[![asciicast](https://asciinema.org/a/K2GmE2EE27CGJisqpFwrGR3eH.svg)](https://asciinema.org/a/K2GmE2EE27CGJisqpFwrGR3eH)
 
->gendiff --format plain beforeDeep.yml afterDeep.yml
+>gendiff --format plain before.yml after.yml
 
-[![asciicast](https://asciinema.org/a/BnQpZz5KjbBZD9PvXjLUlCyym.svg)](https://asciinema.org/a/BnQpZz5KjbBZD9PvXjLUlCyym)
+[![asciicast](https://asciinema.org/a/lP6SY9WY6pO2YuyvUkGyPeNP8.svg)](https://asciinema.org/a/lP6SY9WY6pO2YuyvUkGyPeNP8)
 
->gendiff --format json beforeDeep.json afterDeep.json
+>gendiff --format json before.json after.json
 
-[![asciicast](https://asciinema.org/a/GTcZyEsk0ltYaV8Ac5vNgsc0q.svg)](https://asciinema.org/a/GTcZyEsk0ltYaV8Ac5vNgsc0q)
+[![asciicast](https://asciinema.org/a/AF90ATxLB1CyD6L6Zb8bJSJ5F.svg)](https://asciinema.org/a/AF90ATxLB1CyD6L6Zb8bJSJ5F)
