@@ -8,4 +8,4 @@ const renders = {
   json: toJsonRender,
 };
 
-export default (tree, format = 'tree') => renders[format](tree);
+export default (tree, format) => renders[format](tree);
