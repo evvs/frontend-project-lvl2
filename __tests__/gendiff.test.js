@@ -1,5 +1,4 @@
 import generateDifference from '../src';
-import render from '../src/formatters';
 import path from 'path';
 import fs from 'fs';
 
@@ -19,7 +18,7 @@ test.each(testCases)('Compare two files', ([extension1, extension2], format, res
   const pathToFile1 = getPathToFixture(`before${extension1}`);
   const pathToFile2 = getPathToFixture(`after${extension2}`);
   const expectedResult = readFixture(result);
-  const comparisonResult = render(generateDifference(pathToFile1, pathToFile2), format);
+  const comparisonResult = generateDifference(pathToFile1, pathToFile2, format);
 
   expect(comparisonResult).toEqual(expectedResult);
 });
