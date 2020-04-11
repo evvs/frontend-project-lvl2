@@ -3,9 +3,7 @@ const path = require('path');
 const yaml = require('js-yaml');
 const ini = require('ini');
 
-const readFile = (file) => fs.readFileSync(file, 'utf-8');
-
-const fileFormats = [{
+const parsers = [{
   extname: '.json',
   parser: JSON.parse,
 },
@@ -19,16 +17,13 @@ const fileFormats = [{
 },
 ];
 
-const findFileParser = (file) => {
-  const { parser } = fileFormats.find(({ extname }) => extname === path.extname(file));
+const getParser = (pathToFile) => {
+  const { parser } = parsers.find(({ extname }) => extname === path.extname(pathToFile));
   return parser;
 };
 
-const parseFile = (file) => {
-  const fileData = readFile(file);
-  const parseData = findFileParser(file);
-
-  return parseData(fileData);
+export default (pathToFile) => {
+  const fileContent = fs.readFileSync(pathToFile, 'utf-8');
+  const parseContent = getParser(pathToFile);
+  return parseContent(fileContent);
 };
-
-export { parseFile, readFile };
