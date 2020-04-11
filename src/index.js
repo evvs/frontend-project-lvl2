@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import { parseFile } from './parsers';
+import parseFile from './parsers';
+import render from './formatters';
 
 const path = require('path');
 
@@ -7,7 +8,7 @@ const path = require('path');
 const getPathToFile = (file) => path.resolve(process.cwd(), `${file}`);
 
 
-export default (file1, file2) => {
+const buildAst = (file1, file2) => {
   const parsedFile1 = parseFile(getPathToFile(file1));
   const parsedFile2 = parseFile(getPathToFile(file2));
 
@@ -57,3 +58,5 @@ export default (file1, file2) => {
 
   return compare(parsedFile1, parsedFile2);
 };
+
+export default (pathToFile1, pathToFile2, format = 'tree') => render(buildAst(pathToFile1, pathToFile2), format);
