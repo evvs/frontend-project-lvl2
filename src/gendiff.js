@@ -1,6 +1,4 @@
 import genDiff from '.';
-import render from './formatters';
-
 
 const commander = require('commander');
 
@@ -13,10 +11,8 @@ export default () => {
     .arguments('<firstPath> <secondPath>')
     .option('-f, --format [type]', 'output format')
     .action((firstPath, secondPath) => {
-      const differences = genDiff(firstPath, secondPath);
-
-      console.log(render(differences, program.format));
-      return differences;
+      const differences = genDiff(firstPath, secondPath, program.format);
+      console.log(differences);
     })
     .parse(process.argv);
 };
