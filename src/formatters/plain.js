@@ -5,9 +5,9 @@ const valueToStr = (value) => (_.isObject(value) ? '[complex value]' : value);
 
 const generateOutput = (path, node) => {
   const property = path.length > 1 ? path.join('.') : path;
-  switch (node.action) {
+  switch (node.type) {
     case 'added':
-      return `Property '${property}' was added with value: '${valueToStr(node.value)}'`;
+      return `Property '${property}' was added with value: '${valueToStr(node.newValue)}'`;
     case 'deleted':
       return `Property '${property}' was deleted`;
     case 'changed':
@@ -15,18 +15,18 @@ const generateOutput = (path, node) => {
     case 'unchanged':
       return 'unchanged';
     default:
-      return null;
+      throw new Error(`Unknown node type: '${node.type}'!`);
   }
 };
 
 const render = (tree) => {
-  const iter = (nodes, path) => nodes.reduce((acc, cNode) => {
+  const iter = (nodes, path) => nodes.map((cNode) => {
     const cPath = cNode.name;
-    if (_.has(cNode, 'children')) {
-      return [...acc, iter(cNode.children, [...path, cPath])];
+    if (cNode.type === 'tree') {
+      return [iter(cNode.children, [...path, cPath])];
     }
-    return [...acc, generateOutput([...path, cPath], cNode)];
-  }, []);
+    return [generateOutput([...path, cPath], cNode)];
+  });
 
   const result = _.flattenDeep(iter(tree, []))
     .filter((e) => e !== 'unchanged')
