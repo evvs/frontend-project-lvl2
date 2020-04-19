@@ -41,9 +41,7 @@ ${indent(depth)}+ ${node.name}: ${stringify(node.newValue, depth)}\n`;
     return renderString;
   };
 
-  return `{
-  ${iter(tree, 0).trim()}
-}`;
+  return `{\n  ${iter(tree, 0).trim()}\n}`;
 };
 
 export default render;
