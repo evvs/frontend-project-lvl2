@@ -12,8 +12,9 @@ const makeNode = (type, name, oldValue = null, newValue = null, children = []) =
 });
 
 const compare = (before, after) => {
-  const keysUnion = _.union([...Object.keys(before), ...Object.keys(after)]);
-  return keysUnion.map((key) => {
+  const sharedKeys = _.union([...Object.keys(before), ...Object.keys(after)]);
+
+  return sharedKeys.map((key) => {
     if (_.isObject(before[key]) && _.isObject(after[key])) {
       return makeNode('tree', key, null, null, compare(before[key], after[key]));
     }
