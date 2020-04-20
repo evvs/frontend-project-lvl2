@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const yaml = require('js-yaml');
-const ini = require('ini');
+import fs from 'fs';
+import path from 'path';
+import yaml from 'js-yaml';
+import ini from 'ini';
 
 const parsers = [{
   extname: '.json',

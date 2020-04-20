@@ -1,20 +1,18 @@
 import _ from 'lodash';
+import path from 'path';
 import parseFile from './parsers';
 import render from './formatters';
 
-const path = require('path');
-
-
-const getPathToFile = (file) => path.resolve(process.cwd(), `${file}`);
+const getPathToFile = (fileName) => path.resolve(process.cwd(), `${fileName}`);
 
 const makeNode = (type, name, oldValue = null, newValue = null, children = []) => ({
   type, name, oldValue, newValue, children,
 });
 
 const compare = (before, after) => {
-  const sharedKeys = _.union([...Object.keys(before), ...Object.keys(after)]);
+  const keysUnion = _.union(_.keys(before), _.keys(after));
 
-  return sharedKeys.map((key) => {
+  return keysUnion.map((key) => {
     if (_.isObject(before[key]) && _.isObject(after[key])) {
       return makeNode('tree', key, null, null, compare(before[key], after[key]));
     }
@@ -34,9 +32,9 @@ const compare = (before, after) => {
   });
 };
 
-const buildAst = (file1, file2) => {
-  const parsedFile1 = parseFile(getPathToFile(file1));
-  const parsedFile2 = parseFile(getPathToFile(file2));
+const buildAst = (pathToFileBefore, pathToFileAfter) => {
+  const parsedFile1 = parseFile(getPathToFile(pathToFileBefore));
+  const parsedFile2 = parseFile(getPathToFile(pathToFileAfter));
 
   return compare(parsedFile1, parsedFile2);
 };
