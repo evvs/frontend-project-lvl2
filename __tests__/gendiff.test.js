@@ -2,6 +2,7 @@ import generateDifference from '../src';
 import path from 'path';
 import fs from 'fs';
 
+
 const getPathToFixture = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFixture = (filename) => fs.readFileSync(getPathToFixture(filename), 'utf-8');
 
