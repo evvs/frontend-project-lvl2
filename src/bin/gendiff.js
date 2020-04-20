@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import generateDifference from '../gendiff';
+import generateDifference from '../cli';
 
 generateDifference();

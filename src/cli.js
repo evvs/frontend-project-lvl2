@@ -1,6 +1,5 @@
+import commander from 'commander';
 import genDiff from '.';
-
-const commander = require('commander');
 
 const program = new commander.Command();
 
