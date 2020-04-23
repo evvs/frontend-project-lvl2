@@ -3,29 +3,25 @@ import _ from 'lodash';
 
 const valueToStr = (value) => (_.isObject(value) ? '[complex value]' : value);
 
-const generateOutput = (path, node) => {
+const generateOutput = (node, path, fn) => {
   const property = path.length > 1 ? path.join('.') : path;
-  switch (node.type) {
-    case 'added':
-      return `Property '${property}' was added with value: '${valueToStr(node.newValue)}'`;
-    case 'deleted':
-      return `Property '${property}' was deleted`;
-    case 'changed':
-      return `Property '${property}' was changed from '${valueToStr(node.oldValue)}' to '${valueToStr(node.newValue)}'`;
-    case 'unchanged':
-      return 'unchanged';
-    default:
-      throw new Error(`Unknown node type: '${node.type}'!`);
-  }
+  const { type } = node;
+
+  const nodeTypes = {
+    tree: fn(node.children, path),
+    added: `Property '${property}' was added with value: '${valueToStr(node.newValue)}'`,
+    deleted: `Property '${property}' was deleted`,
+    changed: `Property '${property}' was changed from '${valueToStr(node.oldValue)}' to '${valueToStr(node.newValue)}'`,
+    unchanged: 'unchanged',
+  };
+
+  return nodeTypes[type];
 };
 
 const render = (tree) => {
-  const iter = (nodes, path) => nodes.map((cNode) => {
-    const cPath = cNode.name;
-    if (cNode.type === 'tree') {
-      return [iter(cNode.children, [...path, cPath])];
-    }
-    return [generateOutput([...path, cPath], cNode)];
+  const iter = (nodes, path) => nodes.map((currentNode) => {
+    const { name } = currentNode;
+    return generateOutput(currentNode, [...path, name], iter);
   });
 
   const result = _.flattenDeep(iter(tree, []))
