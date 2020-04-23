@@ -3,12 +3,12 @@ import _ from 'lodash';
 
 const valueToStr = (value) => (_.isObject(value) ? '[complex value]' : value);
 
-const generateOutput = (node, path, fn) => {
+const generateOutput = (node, path, iter) => {
   const property = path.length > 1 ? path.join('.') : path;
   const { type } = node;
 
   const nodeTypes = {
-    tree: fn(node.children, path),
+    tree: iter(node.children, path),
     added: `Property '${property}' was added with value: '${valueToStr(node.newValue)}'`,
     deleted: `Property '${property}' was deleted`,
     changed: `Property '${property}' was changed from '${valueToStr(node.oldValue)}' to '${valueToStr(node.newValue)}'`,
