@@ -5,7 +5,7 @@ const program = new commander.Command();
 
 export default () => {
   program
-    .version('0.0.1', '-v, --vers', 'output the version number')
+    .version('1.0.8', '-v, --vers', 'output the version number')
     .description('Compares two configuration files and shows a difference.')
     .arguments('<firstPath> <secondPath>')
     .option('-f, --format [type]', 'output format')
