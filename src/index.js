@@ -13,20 +13,21 @@ const compare = (before, after) => {
   const keysUnion = _.union(_.keys(before), _.keys(after));
 
   return keysUnion.map((key) => {
-    if (_.isObject(before[key]) && _.isObject(after[key])) {
-      return makeNode('tree', key, null, null, compare(before[key], after[key]));
-    }
+
     if (!_.has(after, key)) {
       return makeNode('deleted', key, before[key]);
     }
     if (!_.has(before, key)) {
       return makeNode('added', key, null, after[key]);
     }
-    if (_.has(before, key) && _.has(after, key) && before[key] === after[key]) {
+    if (before[key] === after[key]) {
       return makeNode('unchanged', key, before[key]);
     }
-    if (_.has(before, key) && _.has(after, key) && before[key] !== after[key]) {
+    if (before[key] !== after[key]) {
       return makeNode('changed', key, before[key], after[key]);
+    }
+    if (_.isObject(before[key]) && _.isObject(after[key])) {
+      return makeNode('tree', key, null, null, compare(before[key], after[key]));
     }
     throw new Error('Unexpected condition!');
   });
