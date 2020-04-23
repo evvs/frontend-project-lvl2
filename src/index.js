@@ -28,7 +28,7 @@ const compare = (before, after) => {
     if (before[key] !== after[key]) {
       return makeNode('changed', key, before[key], after[key]);
     }
-    throw new Error('Unexpected !');
+    throw new Error(`${key} is missing in both files`);
   });
 };
 
