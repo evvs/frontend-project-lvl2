@@ -15,15 +15,15 @@ const stringify = (nodeValue, depth) => {
   return ['{', result, `${indent(depth)}  }`].join('\n');
 };
 
-const generateOutput = (node, acc, depth, iter) => {
+const generateOutput = (node, depth, iter) => {
   const { type } = node;
 
   const nodeTypes = {
-    tree: `${acc}  ${indent(depth)}${node.name}: {\n${iter(node.children, depth + 1)}${indent(depth)}  }\n`,
-    added: `${acc}${indent(depth)}+ ${node.name}: ${stringify(node.newValue, depth)}\n`,
-    deleted: `${acc}${indent(depth)}- ${node.name}: ${stringify(node.oldValue, depth)}\n`,
-    changed: `${acc}${indent(depth)}- ${node.name}: ${stringify(node.oldValue, depth)}\n${indent(depth)}+ ${node.name}: ${stringify(node.newValue, depth)}\n`,
-    unchanged: `${acc}${indent(depth)}  ${node.name}: ${stringify(node.oldValue, depth)}\n`,
+    tree: `  ${indent(depth)}${node.name}: {\n${iter(node.children, depth + 1)}\n${indent(depth)}  }`,
+    added: `${indent(depth)}+ ${node.name}: ${stringify(node.newValue, depth)}`,
+    deleted: `${indent(depth)}- ${node.name}: ${stringify(node.oldValue, depth)}`,
+    changed: `${indent(depth)}- ${node.name}: ${stringify(node.oldValue, depth)}\n${indent(depth)}+ ${node.name}: ${stringify(node.newValue, depth)}`,
+    unchanged: `${indent(depth)}  ${node.name}: ${stringify(node.oldValue, depth)}`,
   };
 
   return nodeTypes[type];
@@ -31,7 +31,7 @@ const generateOutput = (node, acc, depth, iter) => {
 
 
 const render = (tree) => {
-  const iter = (nodes, depth) => nodes.reduce((acc, node) => generateOutput(node, acc, depth, iter), '');
+  const iter = (nodes, depth) => nodes.map((node) => generateOutput(node, depth, iter)).join('\n');
   const result = `{\n  ${iter(tree, 0).trim()}\n}`;
   return result;
 };
