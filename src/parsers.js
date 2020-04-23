@@ -4,21 +4,21 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 
 const parsers = [{
-  extname: '.json',
+  extension: '.json',
   parser: JSON.parse,
 },
 {
-  extname: '.yml',
+  extension: '.yml',
   parser: yaml.safeLoad,
 },
 {
-  extname: '.ini',
+  extension: '.ini',
   parser: ini.parse,
 },
 ];
 
 const getParser = (pathToFile) => {
-  const { parser } = parsers.find(({ extname }) => extname === path.extname(pathToFile));
+  const { parser } = parsers.find(({ extension }) => extension === path.extname(pathToFile));
   return parser;
 };
 
