@@ -17,7 +17,6 @@ const stringify = (nodeValue, depth) => {
 
 const generateOutput = (node, depth, iter) => {
   const { type } = node;
-
   const nodeTypes = {
     tree: `  ${indent(depth)}${node.name}: {\n${iter(node.children, depth + 1)}\n${indent(depth)}  }`,
     added: `${indent(depth)}+ ${node.name}: ${stringify(node.newValue, depth)}`,
@@ -31,7 +30,9 @@ const generateOutput = (node, depth, iter) => {
 
 
 const render = (tree) => {
-  const iter = (nodes, depth) => nodes.map((node) => generateOutput(node, depth, iter)).join('\n');
+  const iter = (nodes, depth) => nodes.map((node) => generateOutput(node, depth, iter))
+    .join('\n');
+
   const result = `{\n  ${iter(tree, 0).trim()}\n}`;
   return result;
 };
