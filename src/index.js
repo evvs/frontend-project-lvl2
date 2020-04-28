@@ -1,9 +1,18 @@
 import _ from 'lodash';
 import path from 'path';
-import parseFile from './parsers';
+import fs from 'fs';
+import getParser from './parsers';
 import render from './formatters';
 
-const getPathToFile = (fileName) => path.resolve(process.cwd(), `${fileName}`);
+const getPathToFile = (pathToFile) => path.resolve(process.cwd(), `${pathToFile}`);
+
+const getParsedContent = (pathToContent) => {
+  const currentPath = getPathToFile(pathToContent);
+  const content = fs.readFileSync(currentPath, 'utf-8');
+  const parse = getParser(path.extname(currentPath));
+  const parsedContent = parse(content);
+  return parsedContent;
+};
 
 const makeNode = (type, name, oldValue = null, newValue = null, children = []) => ({
   type, name, oldValue, newValue, children,
@@ -32,11 +41,11 @@ const compare = (before, after) => {
   });
 };
 
-const buildAst = (pathToFileBefore, pathToFileAfter) => {
-  const parsedFile1 = parseFile(getPathToFile(pathToFileBefore));
-  const parsedFile2 = parseFile(getPathToFile(pathToFileAfter));
+const buildAst = (fileBefore, fileAfter) => {
+  const parsedContent1 = getParsedContent(fileBefore);
+  const parsedContent2 = getParsedContent(fileAfter);
 
-  return compare(parsedFile1, parsedFile2);
+  return compare(parsedContent1, parsedContent2);
 };
 
 
