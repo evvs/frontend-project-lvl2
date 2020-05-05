@@ -1,52 +1,50 @@
 import _ from 'lodash';
 import path from 'path';
 import fs from 'fs';
-import getParser from './parsers';
+import parse from './parsers';
 import render from './formatters';
 
-const getPathToFile = (pathToFile) => path.resolve(process.cwd(), `${pathToFile}`);
+const readFile = (pathToFile) => {
+  const currentPath = path.resolve(process.cwd(), `${pathToFile}`);
+  const data = fs.readFileSync(currentPath, 'utf-8');
 
-const getParsedContent = (pathToContent) => {
-  const currentPath = getPathToFile(pathToContent);
-  const content = fs.readFileSync(currentPath, 'utf-8');
-  const parse = getParser(path.extname(currentPath));
-  const parsedContent = parse(content);
-  return parsedContent;
+  return data;
 };
 
 const makeNode = (type, name, oldValue = null, newValue = null, children = []) => ({
   type, name, oldValue, newValue, children,
 });
 
-const compare = (before, after) => {
-  const keysUnion = _.union(_.keys(before), _.keys(after));
+const buildAst = (objBefore, objAfter) => {
+  const keysUnion = _.union(_.keys(objBefore), _.keys(objAfter));
 
   return keysUnion.map((key) => {
-    if (!_.has(after, key)) {
-      return makeNode('deleted', key, before[key]);
+    if (!_.has(objAfter, key)) {
+      return makeNode('deleted', key, objBefore[key]);
     }
-    if (!_.has(before, key)) {
-      return makeNode('added', key, null, after[key]);
+    if (!_.has(objBefore, key)) {
+      return makeNode('added', key, null, objAfter[key]);
     }
-    if (_.isObject(before[key]) && _.isObject(after[key])) {
-      return makeNode('tree', key, null, null, compare(before[key], after[key]));
+    if (_.isObject(objBefore[key]) && _.isObject(objAfter[key])) {
+      return makeNode('tree', key, null, null, buildAst(objBefore[key], objAfter[key]));
     }
-    if (before[key] === after[key]) {
-      return makeNode('unchanged', key, before[key]);
+    if (objBefore[key] === objAfter[key]) {
+      return makeNode('unchanged', key, objBefore[key]);
     }
-    if (before[key] !== after[key]) {
-      return makeNode('changed', key, before[key], after[key]);
+    if (objBefore[key] !== objAfter[key]) {
+      return makeNode('changed', key, objBefore[key], objAfter[key]);
     }
-    throw new Error(`${key} is missing in both files`);
+    throw new Error(`${key} is missing in the data`);
   });
 };
 
-const buildAst = (fileBefore, fileAfter) => {
-  const parsedContent1 = getParsedContent(fileBefore);
-  const parsedContent2 = getParsedContent(fileAfter);
+export default (pathToFile1, pathToFile2, format = 'tree') => {
+  const dataBefore = readFile(pathToFile1);
+  const objBefore = parse(path.extname(pathToFile1), dataBefore);
 
-  return compare(parsedContent1, parsedContent2);
+  const dataAfter = readFile(pathToFile2);
+  const objAfter = parse(path.extname(pathToFile2), dataAfter);
+
+  const ast = buildAst(objBefore, objAfter);
+  return render(ast, format);
 };
-
-
-export default (pathToFile1, pathToFile2, format = 'tree') => render(buildAst(pathToFile1, pathToFile2), format);

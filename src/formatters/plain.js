@@ -12,7 +12,7 @@ const generateOutput = (node, path, iter) => {
     added: `Property '${property}' was added with value: '${valueToStr(node.newValue)}'`,
     deleted: `Property '${property}' was deleted`,
     changed: `Property '${property}' was changed from '${valueToStr(node.oldValue)}' to '${valueToStr(node.newValue)}'`,
-    unchanged: 'unchanged',
+    unchanged: null,
   };
 
   return nodeTypes[type];
@@ -25,7 +25,7 @@ const render = (tree) => {
   });
 
   const result = _.flattenDeep(iter(tree, []))
-    .filter((e) => e !== 'unchanged')
+    .filter(Boolean)
     .join('\n');
 
   return result;

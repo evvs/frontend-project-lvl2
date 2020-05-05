@@ -9,9 +9,10 @@ const stringify = (nodeValue, depth) => {
 
   const result = Object.keys(nodeValue)
     .map((key) => {
-      const value = _.isObject(nodeValue[key]) ? stringify(nodeValue[key], depth + 1).join('\n') : `${nodeValue[key]}`;
+      const value = stringify(nodeValue[key], depth + 1);
       return `${indent(depth + 1)}  ${key}: ${value}`;
     });
+
   return ['{', result, `${indent(depth)}  }`].join('\n');
 };
 
